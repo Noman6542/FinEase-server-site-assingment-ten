@@ -29,9 +29,14 @@ async function run() {
     const collection =db.collection('finease-data')
 
     app.post('/finease-data',async(req,res)=>{
-      const data =req.body;
-      const result = collection.insertOne(data);
-      res.send(result);
+       try {
+    const data = req.body;
+    const result = await collection.insertOne(data);  
+    res.status(201).send(result); 
+  } catch (error) {
+    console.error("Error inserting data:", error);
+    res.status(500).send({ message: "Failed to insert data", error: error.message });
+  }
     })
 
     
