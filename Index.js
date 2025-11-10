@@ -128,6 +128,35 @@ app.get("/transactions", async (req, res) => {
       res.send(result);
     });
 
+    // Report chart api 
+    app.get("/report", async (req, res) => {
+  try {
+    const transactions = await client
+      .db("yourDatabaseName")
+      .collection("transactions")
+      .find()
+      .toArray();
+
+    
+    const categoryTotals = transactions.reduce((acc, t) => {
+      const cat = t.category || "Others";
+      acc[cat] = (acc[cat] || 0) + t.amount;
+      return acc;
+    }, {});
+
+  
+    const result = Object.entries(categoryTotals).map(([name, value]) => ({
+      name,
+      value,
+    }));
+
+    res.send(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Error generating report" });
+  }
+});
+
 
 
 
