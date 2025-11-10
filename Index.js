@@ -134,11 +134,7 @@ app.get("/transactions", async (req, res) => {
     const userEmail = req.query.userEmail;
     const query = userEmail ? { userEmail } : {};
 
-    const transactions = await client
-      .db("finease")
-      .collection("finease-data")
-      .find(query)
-      .toArray();
+    const transactions = await collection("finease-data").find(query).toArray();
 
     const categoryTotals = transactions.reduce((acc, t) => {
       const cat = t.category || "Others";
