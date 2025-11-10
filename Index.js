@@ -131,7 +131,7 @@ app.get("/transactions", async (req, res) => {
 
 
 
-  // delete 
+  // delete api
 app.delete('/delete/:id', async (req, res) => {
   try {
     const {id}= req.params.id;
