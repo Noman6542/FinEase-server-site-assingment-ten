@@ -129,22 +129,23 @@ app.get("/transactions", async (req, res) => {
     });
 
     // Report chart api 
-    app.get("/report", async (req, res) => {
+   app.get("/report", async (req, res) => {
   try {
+    const userEmail = req.query.userEmail;
+    const query = userEmail ? { userEmail } : {};
+
     const transactions = await client
-      .db("yourDatabaseName")
-      .collection("transactions")
-      .find()
+      .db("finease")
+      .collection("finease-data")
+      .find(query)
       .toArray();
 
-    
     const categoryTotals = transactions.reduce((acc, t) => {
       const cat = t.category || "Others";
       acc[cat] = (acc[cat] || 0) + t.amount;
       return acc;
     }, {});
 
-  
     const result = Object.entries(categoryTotals).map(([name, value]) => ({
       name,
       value,
