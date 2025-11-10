@@ -121,7 +121,7 @@ app.get("/transactions", async (req, res) => {
  app.put("/transactions/:id", async (req, res) => {
       const id = req.params.id;
       const updated = req.body;
-      const result = await transactionsCollection.updateOne(
+      const result = await collection.updateOne(
         { _id: new ObjectId(id) },
         { $set: updated }
       );
