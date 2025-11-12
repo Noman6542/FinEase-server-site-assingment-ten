@@ -1,7 +1,7 @@
 const express = require('express')
 const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
-const admin = require("firebase-admin");
-const serviceAccount = require("./serviceKey.json");
+// const admin = require("firebase-admin");
+// const serviceAccount = require("./serviceKey.json");
 const cors = require('cors')
 require('dotenv').config()
 const app = express()
@@ -11,9 +11,9 @@ app.use(express.json())
 
 
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount)
+// });
 
 
 
@@ -29,27 +29,27 @@ const client = new MongoClient(uri, {
   }
 });
 
-const verifyToken =async(req,res,next)=>{
-const authorization =req.headers.authorization;
-if(!authorization){
-  return res.status(401).send({
-    message:'unauthorized access'
-  })
-}
-const token = authorization.split(' ')[1]
-try{
- await admin.auth().verifyIdToken(token);
+// const verifyToken =async(req,res,next)=>{
+// const authorization =req.headers.authorization;
+// if(!authorization){
+//   return res.status(401).send({
+//     message:'unauthorized access'
+//   })
+// }
+// const token = authorization.split(' ')[1]
+// try{
+//  await admin.auth().verifyIdToken(token);
 
-next();
-}catch(error){
-  res.status(401).send({
-    message:'unauthorized access'
-  })
-}
+// next();
+// }catch(error){
+//   res.status(401).send({
+//     message:'unauthorized access'
+//   })
+// }
 
   
 
-}
+// }
 
 async function run() {
   try {
@@ -113,7 +113,7 @@ app.get('/finease-data', async (req, res) => {
 });
 
 // details 
-app.get("/transactions/:id",verifyToken ,async (req, res) => {
+app.get("/transactions/:id",async (req, res) => {
   try {
     const {id} = req.params;
     console.log(id);
@@ -131,7 +131,7 @@ app.get("/transactions/:id",verifyToken ,async (req, res) => {
   }
 });
 
-app.get("/transactions",verifyToken ,async (req, res) => {
+app.get("/transactions",async (req, res) => {
   try {
     const { category, userEmail } = req.query;
     let query = {};
@@ -149,7 +149,7 @@ app.get("/transactions",verifyToken ,async (req, res) => {
 
 // update api
 
- app.put("/transactions/:id",verifyToken, async (req, res) => {
+ app.put("/transactions/:id", async (req, res) => {
       const id = req.params.id;
       const updated = req.body;
       const result = await collection.updateOne(
@@ -160,7 +160,7 @@ app.get("/transactions",verifyToken ,async (req, res) => {
     });
 
     // Report chart api 
-   app.get("/report",verifyToken, async (req, res) => {
+   app.get("/report", async (req, res) => {
   try {
     const userEmail = req.query.userEmail;
     const query = userEmail ? { userEmail } : {};
@@ -191,7 +191,7 @@ app.get("/transactions",verifyToken ,async (req, res) => {
   // delete api
 app.delete('/delete/:id', async (req, res) => {
   try {
-    const {id}= req.params.id;
+    const {id}= req.params;
 
     if (!id) return res.status(400).send({ message: "Missing id!" });
 
