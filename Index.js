@@ -19,6 +19,8 @@ app.use(express.json())
 
 
 const uri = `mongodb+srv://${process.env.DV_USERNAME}:${process.env.DV_PASSWORD}@cluster0.4ckhtis.mongodb.net/?appName=Cluster0`;
+// console.log(uri);
+
 
 
 const client = new MongoClient(uri, {
@@ -52,9 +54,14 @@ const client = new MongoClient(uri, {
 // }
 
 async function run() {
+  app.get("/", (req, res) => {
+  res.send(" FinEase server is running successfully!");
+});
+
+  
   try {
    
-    await client.connect();
+    // await client.connect();
 
     const db= client.db('finease')
     const collection =db.collection('finease-data')
@@ -211,7 +218,7 @@ app.delete('/delete/:id', async (req, res) => {
 
     
     
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
