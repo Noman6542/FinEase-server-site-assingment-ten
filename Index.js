@@ -14,9 +14,12 @@ app.use(express.json())
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)
 // });
+// ${process.env.DV_USERNAME} 
+// ${process.env.DV_PASSWORD} 
+// DV_USERNAME ="finease"
+// DV_PASSWORD ="5mcITlFDhTDk0laz"
 
-
-
+console.log(`${process.env.DV_USERNAME},${process.env.DV_PASSWORD}`);
 
 const uri = `mongodb+srv://${process.env.DV_USERNAME}:${process.env.DV_PASSWORD}@cluster0.4ckhtis.mongodb.net/?appName=Cluster0`;
 // console.log(uri);
